@@ -1,0 +1,29 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: stakater
+  namespace: demo
+spec:
+  releaseName: stakater
+  chart:
+    repository: https://kubernetes-charts.storage.googleapis.com
+    name: sealed-secrets
+    version: 1.6.0
+  values:
+    image:
+      repository: quay.io/bitnami/sealed-secrets-controller
+      tag: v0.9.5
+      pullPolicy: IfNotPresent
+    controller:
+      create: true
+    crd:
+      create: false
+    rbac:
+      create: true
+    secretName: "sealed-secrets-key"
+    serviceAccount:
+      create: true
+      name: "stakater-sealed-secret-sa"
+    # commandArgs: 
+    # - "--key-renew-period"
+    # - "0"
